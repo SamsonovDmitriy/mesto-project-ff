@@ -3,12 +3,14 @@ const cardTemplate = document.querySelector('#card-template').content
 const cardContainer = document.querySelector('.places')
 const cardList = cardContainer.querySelector('.places__list')
 
-function addCard(cardTitle, imageLink, deleteFunction) {
+function createCard(cardName, imageLink, deleteFunction) {
 	const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true)
-	cardElement.querySelector('.card__title').textContent = cardTitle
-	cardElement.querySelector('.card__image').src = imageLink
-	cardElement.querySelector('.card__image').alt = cardTitle
+	const cardImage = cardElement.querySelector('.card__image')
+	const cardTitle = cardElement.querySelector('.card__title')
 	const deleteButton = cardElement.querySelector('.card__delete-button')
+	cardImage.src = imageLink
+	cardImage.alt = cardName
+	cardTitle.textContent = cardName
 	deleteButton.addEventListener('click', deleteFunction)
 	return cardElement
 }
@@ -18,5 +20,5 @@ function deleteCard(evt){
 }
 
 initialCards.forEach( element => {
-	cardList.append(addCard(element.name, element.link, deleteCard))
+	cardList.append(createCard(element.name, element.link, deleteCard))
 })
