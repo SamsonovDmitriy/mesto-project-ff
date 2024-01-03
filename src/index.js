@@ -1,6 +1,5 @@
 // Здесь импорты
 
-import initialCards from './cards.js';
 import './index.css';
 // import { createCard, deleteCard } from '../src/components/card.js'
 // + К импорту добавится функцию для лайка
