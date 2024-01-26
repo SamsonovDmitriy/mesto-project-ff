@@ -1,33 +1,23 @@
-import { popups } from '../index.js';
-
-function openModal(element) {
-	element.classList.add('popup_is-opened');
+function openModal(popup) {
+	popup.classList.add('popup_is-opened');
+	document.addEventListener('keydown', closeWithEsc);
 }
 
-function closeModal(evt) {
-	if (evt.target.classList.contains('popup__close')) {
-		evt.target.closest('.popup').classList.remove('popup_is-opened');
-	}
+function closeModal(popup) {
+	popup.classList.remove('popup_is-opened');
+	document.removeEventListener('keydown', closeWithEsc);
 }
 
 function closeWithEsc(evt) {
-	if (evt.key === 'Escape' && popups[0].classList.contains('popup_is-opened')) {
-		popups[0].classList.remove('popup_is-opened');
-	} else if (evt.key === 'Escape' && popups[1].classList.contains('popup_is-opened')) {
-		popups[1].classList.remove('popup_is-opened');
-	} else if (evt.key === 'Escape' && popups[2].classList.contains('popup_is-opened')) {
-		popups[2].classList.remove('popup_is-opened');
+	if (evt.key === 'Escape') {
+		closeModal(document.querySelector('.popup_is-opened'));
 	}
 }
 
 function closeWithClickOnOverlay(evt) {
-	if (
-		evt.target === popups[0] ||
-		evt.target === popups[1] ||
-		evt.target === popups[2]
-	) {
-		evt.target.classList.toggle('popup_is-opened');
+	if (evt.target === document.querySelector('.popup_is-opened')) {
+		closeModal(evt.target);
 	}
 }
 
-export { closeModal, closeWithClickOnOverlay, closeWithEsc, openModal };
+export { closeModal, closeWithClickOnOverlay, openModal };
