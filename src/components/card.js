@@ -1,4 +1,7 @@
-function createCard(cardName, imageLink, deleteFunction, likeFunction) {
+
+function createCard(cardName,imageLink,deleteFunction,likeFunction,
+	openImageFunction
+) {
 	const cardTemplate = document.querySelector('#card-template').content;
 	const cardElement = cardTemplate
 		.querySelector('.places__item')
@@ -12,6 +15,7 @@ function createCard(cardName, imageLink, deleteFunction, likeFunction) {
 	cardTitle.textContent = cardName;
 	deleteButton.addEventListener('click', deleteFunction);
 	likeButton.addEventListener('click', likeFunction);
+	cardImage.addEventListener('click',() => openImageFunction(cardName,imageLink));
 	return cardElement;
 }
 
