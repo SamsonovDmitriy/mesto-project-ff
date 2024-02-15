@@ -1,17 +1,35 @@
 const cardTemplate = document.querySelector('#card-template').content;
 
-function createCard(cardName, imageLink, deleteCard, likeHandler, openImage) {
-	const cardElement = getCardTemplate(cardTemplate)
+function createCard(
+	cardName,
+	imageLink,
+	deleteMyCard,
+	likeHandler,
+	putLike,
+	openImage,
+	likes,
+	buttonDelete,
+	cardId
+) {
+	const cardElement = getCardTemplate(cardTemplate);
 	const likeButton = cardElement.querySelector('.card__like-button');
 	const cardImage = cardElement.querySelector('.card__image');
 	const cardTitle = cardElement.querySelector('.card__title');
 	const deleteButton = cardElement.querySelector('.card__delete-button');
+	const counterOfLikes = cardElement.querySelector('.card__likes-counter');
+	if (!buttonDelete) {
+		deleteButton.hidden = true;
+	}
+	counterOfLikes.textContent = likes;
 	cardImage.src = imageLink;
 	cardImage.alt = cardName;
 	cardTitle.textContent = cardName;
-	deleteButton.addEventListener('click', deleteCard);
-	likeButton.addEventListener('click', likeHandler);
+	likeButton.addEventListener('click', () => likeHandler(cardId), putLike(likeButton), counterOfLikes.textContent = likes)
 	cardImage.addEventListener('click', () => openImage(cardName, imageLink));
+	deleteButton.addEventListener('click', () => {
+		deleteMyCard(cardId);
+	});
+  
 	return cardElement;
 }
 
@@ -20,14 +38,8 @@ function getCardTemplate(template) {
 	return element;
 }
 
-function addLike(evt) {
-	if (evt.target.classList.contains('card__like-button')) {
-		evt.target.classList.toggle('card__like-button_is-active');
-	}
+function putLike(element) {
+	element.classList.toggle('card__like-button_is-active');
 }
 
-function deleteCard(evt) {
-	evt.target.closest('.places__item').remove();
-}
-
-export { addLike, createCard, deleteCard };
+export { createCard, putLike };

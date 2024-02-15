@@ -1,0 +1,12 @@
+.profile__edit-icon {
+	opacity: 0;
+	width: 26px;
+	height: 26px;
+	z-index: 1;
+	inset-block-start: 50px;
+	inset-inline-start: 50px;
+	position: absolute;
+}
+
+
+

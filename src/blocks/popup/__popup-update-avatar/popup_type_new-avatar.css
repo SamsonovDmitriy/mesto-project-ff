@@ -1,0 +1,12 @@
+.popup_type_new-avatar .popup__form {
+	margin-top: 27px;
+}
+
+.popup_type_new-avatar .popup__content {
+	min-height: 0;
+}
+
+.popup_type_new-avatar .popup__close {
+	right: -40px;
+	top: -41px;
+}
