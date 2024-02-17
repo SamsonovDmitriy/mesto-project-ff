@@ -1,5 +1,3 @@
-// чисто добавить clearValidation
-
 function showInputError(formElement, inputElement, errorMessage) {
 	const ErrorElement = formElement.querySelector(`.${inputElement.id}-error`);
 	inputElement.classList.add('popup__input_type_error');
@@ -22,15 +20,13 @@ function switchButton(formElement) {
 }
 
 function formIsValid(formElement, inputElement) {
-	if (inputElement.validity.patternMismatch) {
-		inputElement.setCustomValidity(inputElement.dataset.errorMessage);
-	} else {
-		inputElement.setCustomValidity('');
-	}
+	inputElement.validity.patternMismatch
+		? inputElement.setCustomValidity(inputElement.dataset.errorMessage)
+		: inputElement.setCustomValidity('');
 
 	if (!inputElement.validity.valid) {
-		showInputError(formElement, inputElement, inputElement.validationMessage);
-		switchButton(formElement);
+		showInputError(formElement, inputElement, inputElement.validationMessage),
+			switchButton(formElement);
 	} else {
 		hideInputError(formElement, inputElement);
 		switchButton(formElement);
