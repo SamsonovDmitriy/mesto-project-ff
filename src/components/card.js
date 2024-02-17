@@ -1,11 +1,12 @@
+import { addLike, deleteLike, deleteMyCard } from './api.js';
+
 const cardTemplate = document.querySelector('#card-template').content;
 
 function createCard(
 	cardName,
 	imageLink,
-	deleteMyCard,
+	deleteCard,
 	likeHandler,
-	putLike,
 	openImage,
 	likes,
 	buttonDelete,
@@ -17,19 +18,20 @@ function createCard(
 	const cardTitle = cardElement.querySelector('.card__title');
 	const deleteButton = cardElement.querySelector('.card__delete-button');
 	const counterOfLikes = cardElement.querySelector('.card__likes-counter');
-	if (!buttonDelete) {
-		deleteButton.hidden = true;
-	}
+
+	buttonDelete ? (deleteButton.hidden = false) : (deleteButton.hidden = true);
 	counterOfLikes.textContent = likes;
 	cardImage.src = imageLink;
 	cardImage.alt = cardName;
 	cardTitle.textContent = cardName;
-	likeButton.addEventListener('click', () => likeHandler(cardId), putLike(likeButton), counterOfLikes.textContent = likes)
+
+	likeButton.addEventListener('click', () => {
+		likeHandler(likeButton, cardId, counterOfLikes);
+	});
 	cardImage.addEventListener('click', () => openImage(cardName, imageLink));
 	deleteButton.addEventListener('click', () => {
-		deleteMyCard(cardId);
+		deleteCard(deleteButton, cardId);
 	});
-  
 	return cardElement;
 }
 
@@ -38,8 +40,27 @@ function getCardTemplate(template) {
 	return element;
 }
 
-function putLike(element) {
-	element.classList.toggle('card__like-button_is-active');
+function likeHandler(element, cardId, counter) {
+	if (!element.classList.contains('card__like-button_is-active')) {
+		element.classList.add('card__like-button_is-active');
+		addLike(cardId)
+			.then(data => {
+				counter.textContent = data.likes.length;
+			})
+			.catch(err => console.log(err));
+	} else {
+		element.classList.toggle('card__like-button_is-active');
+		deleteLike(cardId)
+			.then(data => {
+				counter.textContent = data.likes.length;
+			})
+			.catch(err => console.log(err));
+	}
 }
 
-export { createCard, putLike };
+function deleteCard(element, cardId) {
+	deleteMyCard(cardId);
+	element.parentElement.remove();
+}
+
+export { createCard, deleteCard, likeHandler };

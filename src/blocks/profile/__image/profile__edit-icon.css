@@ -2,11 +2,18 @@
 	opacity: 0;
 	width: 26px;
 	height: 26px;
-	z-index: 1;
-	inset-block-start: 50px;
-	inset-inline-start: 50px;
+	inset-block-start: 79px;
+	inset-inline-start: 44px;
 	position: absolute;
+} 
+
+.profile__edit-icon:hover {
+  opacity: 1;
 }
 
+.profile__edit-icon:hover + .profile__image:hover {
+	background-color:#000000CC;
+  opacity: 0.4;
+}
 
 

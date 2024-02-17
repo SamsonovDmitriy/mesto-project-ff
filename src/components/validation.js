@@ -53,12 +53,12 @@ function enableValidation() {
 	});
 }
 
-// function clearValidation(formElement) {
-// 	switchButton(formElement);
-// 	const inputList = Array.from();
-// 	inputList.forEach(inputElement => {
-// 		hideInputError(formElement, inputElement);
-// 	});
-// }
+function clearValidation(formElement) {
+	switchButton(formElement);
+	const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
+	inputList.forEach(inputElement => {
+		hideInputError(formElement, inputElement);
+	});
+}
 
-export { enableValidation };
+export { clearValidation, enableValidation };
