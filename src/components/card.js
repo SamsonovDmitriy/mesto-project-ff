@@ -6,7 +6,7 @@ function createCard(
 	cardName,
 	imageLink,
 	deleteCard,
-	likeHandler,
+	handleLikeCard,
 	openImage,
 	likes,
 	setDeleteButton,
@@ -29,7 +29,7 @@ function createCard(
 	cardTitle.textContent = cardName;
 
 	likeButton.addEventListener('click', () => {
-		likeHandler(likeButton, cardId, counterOfLikes);
+		handleLikeCard(checkStatusLike, likeButton, counterOfLikes, cardId);
 	});
 	cardImage.addEventListener('click', () => openImage(cardName, imageLink));
 	deleteButton.addEventListener('click', () => {
@@ -51,27 +51,22 @@ function getCardTemplate(template) {
 	return element;
 }
 
-function likeHandler(element, cardId, counter) {
-	if (!element.classList.contains('card__like-button_is-active')) {
-		element.classList.add('card__like-button_is-active');
-		addLike(cardId)
-			.then(data => {
-				counter.textContent = data.likes.length;
-			})
-			.catch(err => console.log(err));
-	} else {
-		element.classList.toggle('card__like-button_is-active');
-		deleteLike(cardId)
-			.then(data => {
-				counter.textContent = data.likes.length;
-			})
-			.catch(err => console.log(err));
-	}
-}
-
 function deleteCard(element, cardId) {
 	deleteMyCard(cardId);
 	element.parentElement.remove();
 }
 
-export { createCard, deleteCard, likeHandler, setDeleteButton };
+function checkStatusLike() {
+	if (!element.classList.contains('card__like-button_is-active')) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function changeLike(element, counter, likes) {
+	element.classList.toggle('card__like-button_is-active');
+	counter.textContent = likes;
+}
+
+export { createCard, deleteCard, setDeleteButton, changeLike };
