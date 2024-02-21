@@ -1,13 +1,11 @@
 import {
-	changeLike,
 	createCard,
 	deleteCard,
+	likeHandler,
 	setDeleteButton,
 } from '../src/components/card.js';
 import { closeModal, openModal } from '../src/components/modal';
 import {
-	addLike,
-	deleteLike,
 	getInitialCards,
 	getProfileInfo,
 	postNewAvatar,
@@ -32,10 +30,9 @@ const buttonOpenPopupEditProfile = pageContent.querySelector(
 const buttonOpenAddCardPopup = pageContent.querySelector(
 	'.profile__add-button'
 );
-const buttonInPopupEditProfile =
-	popupEditProfile.querySelector('.popup__button');
-const buttonInPopupAddCard = popupAddCard.querySelector('.popup__button');
-const buttonInPopupNewAvatar = popupNewAvatar.querySelector('.popup__button');
+const buttonInPopupEditProfile = popupEditProfile.querySelector('.popup__button')
+const buttonInPopupAddCard = popupAddCard.querySelector('.popup__button')
+const buttonInPopupNewAvatar = popupNewAvatar.querySelector('.popup__button')
 const popupImage = pageContent.querySelector('.popup__image');
 const imageTitle = pageContent.querySelector('.popup__caption');
 
@@ -63,8 +60,8 @@ function openImage(cardName, imageLink) {
 
 function renderLoading(isLoading, popupButton) {
 	isLoading
-		? (popupButton.textContent = 'сохранение...')
-		: (popupButton.textContent = 'сохранение');
+		? popupButton.textContent = 'сохранение...'
+		: popupButton.textContent = 'сохранение';
 }
 
 function handleFormSubmitForEdit(evt) {
@@ -96,7 +93,7 @@ function handleFormSubmitForAddCard(evt) {
 					cardTitle,
 					cardSrc,
 					deleteCard,
-					handleLikeCard,
+					likeHandler,
 					openImage,
 					'0',
 					setDeleteButton,
@@ -142,7 +139,7 @@ Promise.all([getProfileInfo(), getInitialCards()])
 					card.name,
 					card.link,
 					deleteCard,
-					handleLikeCard,
+					likeHandler,
 					openImage,
 					card.likes.length,
 					setDeleteButton,
@@ -157,13 +154,15 @@ Promise.all([getProfileInfo(), getInitialCards()])
 
 buttonOpenPopupEditProfile.addEventListener('click', () => {
 	clearValidation(formEditProfile),
-		(nameInput.value = profileTitle.textContent);
-	(jobInput.value = profileDescription.textContent),
-		openModal(popupEditProfile);
+	nameInput.value = profileTitle.textContent;
+	jobInput.value = profileDescription.textContent,
+	openModal(popupEditProfile);
 });
 
 buttonOpenAddCardPopup.addEventListener('click', () => {
-	clearValidation(formNewCard), formNewCard.reset(), openModal(popupAddCard);
+	clearValidation(formNewCard),
+	formNewCard.reset(),
+	openModal(popupAddCard);
 });
 
 Array.from(popups).forEach(popup => {
@@ -180,17 +179,3 @@ avatarForm.addEventListener('submit', handleFormSubmitForUpdateAvatar);
 avatar.addEventListener('click', () => {
 	openModal(popupNewAvatar);
 });
-
-///////
-
-function handleLikeCard(status, element, counter, cardId) {
-	if (!status) {
-		addLike(cardId).then(res =>
-			changeLike(element, counter, res.likes.length).catch()
-		);
-	} else {
-		deleteLike(cardId)
-			.then(res => changeLike(element, counter, res.likes.length))
-			.catch();
-	}
-}

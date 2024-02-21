@@ -54,7 +54,7 @@ function getCounterOfLikes() {
 }
 
 function deleteMyCard(cardId) {
-	fetch(`${config.baseUrl}/cards/${cardId}`, {
+	return fetch(`${config.baseUrl}/cards/${cardId}`, {
 		method: 'DELETE',
 		headers: config.headers,
 	}).then(res => handleResponse(res));

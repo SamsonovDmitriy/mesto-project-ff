@@ -6,7 +6,7 @@ function createCard(
 	cardName,
 	imageLink,
 	deleteCard,
-	handleLikeCard,
+	likeHandler,
 	openImage,
 	likes,
 	setDeleteButton,
@@ -29,7 +29,7 @@ function createCard(
 	cardTitle.textContent = cardName;
 
 	likeButton.addEventListener('click', () => {
-		handleLikeCard(checkStatusLike, likeButton, counterOfLikes, cardId);
+		likeHandler(likeButton, cardId, counterOfLikes);
 	});
 	cardImage.addEventListener('click', () => openImage(cardName, imageLink));
 	deleteButton.addEventListener('click', () => {
@@ -51,22 +51,33 @@ function getCardTemplate(template) {
 	return element;
 }
 
-function deleteCard(element, cardId) {
-	deleteMyCard(cardId);
-	element.parentElement.remove();
-}
-
-function checkStatusLike() {
+function likeHandler(element, cardId, counter) {
+	// мне кажется если описывать эту логику в разных файлах, то получается довольно непонятно, так как всё раскидано по разным местам, а здесь можно наглядно увидеть всю логику работы
 	if (!element.classList.contains('card__like-button_is-active')) {
-		return true;
+		addLike(cardId)
+			.then(data => {
+				element.classList.add('card__like-button_is-active');
+				counter.textContent = data.likes.length;
+			})
+			.catch(err => console.log(err));
 	} else {
-		return false;
+		deleteLike(cardId)
+			.then(data => {
+				element.classList.toggle('card__like-button_is-active');
+				counter.textContent = data.likes.length;
+			})
+			.catch(err => console.log(err));
 	}
 }
 
-function changeLike(element, counter, likes) {
-	element.classList.toggle('card__like-button_is-active');
-	counter.textContent = likes;
+function deleteCard(element, cardId) {
+	deleteMyCard(cardId)
+		.then(res => {
+			element.parentElement.remove();
+		})
+		.catch(err => {
+			console.log(err);
+		});
 }
 
-export { createCard, deleteCard, setDeleteButton, changeLike };
+export { createCard, deleteCard, likeHandler, setDeleteButton };
