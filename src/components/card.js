@@ -9,7 +9,9 @@ function createCard(
 	likeHandler,
 	openImage,
 	likes,
-	buttonDelete,
+	setDeleteButton,
+	card,
+	myId,
 	cardId
 ) {
 	const cardElement = getCardTemplate(cardTemplate);
@@ -19,7 +21,8 @@ function createCard(
 	const deleteButton = cardElement.querySelector('.card__delete-button');
 	const counterOfLikes = cardElement.querySelector('.card__likes-counter');
 
-	buttonDelete ? (deleteButton.hidden = false) : (deleteButton.hidden = true);
+	setDeleteButton(card, myId, deleteButton);
+
 	counterOfLikes.textContent = likes;
 	cardImage.src = imageLink;
 	cardImage.alt = cardName;
@@ -33,6 +36,14 @@ function createCard(
 		deleteCard(deleteButton, cardId);
 	});
 	return cardElement;
+}
+
+function setDeleteButton(card, myId, deleteButton) {
+	if (card.owner[`_id`] === myId) {
+		deleteButton.hidden = false;
+	} else {
+		deleteButton.hidden = true;
+	}
 }
 
 function getCardTemplate(template) {
@@ -63,4 +74,4 @@ function deleteCard(element, cardId) {
 	element.parentElement.remove();
 }
 
-export { createCard, deleteCard, likeHandler };
+export { createCard, deleteCard, likeHandler, setDeleteButton };
